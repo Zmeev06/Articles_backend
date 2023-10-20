@@ -37,11 +37,11 @@ func main() {
 func getArticle(ctx *fiber.Ctx) error {
 
 	db := database.DB
-	obj, succ := db.Get(ctx.Params("id"))
-	if !succ {
-		return fiber.ErrNotFound
+	var article Article
+	if err := db.First(&article, ctx.Params("id")).Error; err != nil {
+		log.Fatalln(err)
 	}
-	return ctx.JSON(obj)
+	return ctx.JSON(article)
 }
 
 func getAllArticles(ctx *fiber.Ctx) error {
