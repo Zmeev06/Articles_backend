@@ -80,6 +80,7 @@ func createArticle(ctx *fiber.Ctx) error {
 	var articleReq ArticleReqBody
 	if err := ctx.BodyParser(&articleReq); err != nil {
 		fmt.Println(err)
+		return fiber.ErrBadRequest
 	}
 	var article = Article{
 		Title: articleReq.Title,
@@ -93,6 +94,7 @@ func createArticle(ctx *fiber.Ctx) error {
 
 	if err := db.Create(&article).Error; err != nil {
 		fmt.Println(err)
+		return fiber.ErrInternalServerError
 	}
 	return ctx.JSON(article.NormalisedTitle)
 }
