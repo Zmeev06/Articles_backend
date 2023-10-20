@@ -38,13 +38,10 @@ func main() {
 	log.Fatal(app.Listen(":8080"))
 }
 
-// @Summary Get all articles
-// @Description Get all articles
-// @Tags articles
-// @Accept json
-// @Produce json
+// @Summary Get article by id
 // @Success 200 {object} Article{}
 // @Failure 404
+// @Param id path int true "Book ID"
 // @Router /api/article/{id} [get]
 func getArticle(ctx *fiber.Ctx) error {
 
@@ -57,6 +54,10 @@ func getArticle(ctx *fiber.Ctx) error {
 	return ctx.JSON(article)
 }
 
+// @Summary Get all articles
+// @Success 200 {object} []Article{}
+// @Failure 400
+// @Router /api/articles [get]
 func getAllArticles(ctx *fiber.Ctx) error {
 
 	db := database.DB
@@ -68,6 +69,12 @@ func getAllArticles(ctx *fiber.Ctx) error {
 	return ctx.JSON(articles)
 }
 
+// @Summary Create new article, get a normalised title string
+// @Success 200 {object} string
+// @Failure 400
+// @Failure 500
+// @Param request body main.createArticle.ArticleReqBody true "Subset of article fields"
+// @Router /api/create/article [post]
 func createArticle(ctx *fiber.Ctx) error {
 
 	type ArticleReqBody struct {
