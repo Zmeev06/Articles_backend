@@ -51,7 +51,8 @@ func getArticle(ctx *fiber.Ctx) error {
 	db := database.DB
 	var article Article
 	if err := db.First(&article, ctx.Params("id")).Error; err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
+		return fiber.ErrNotFound
 	}
 	return ctx.JSON(article)
 }
@@ -78,7 +79,7 @@ func createArticle(ctx *fiber.Ctx) error {
 	db := database.DB
 	var articleReq ArticleReqBody
 	if err := ctx.BodyParser(&articleReq); err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
 	}
 	var article = Article{
 		Title: articleReq.Title,
@@ -91,7 +92,7 @@ func createArticle(ctx *fiber.Ctx) error {
 	}
 
 	if err := db.Create(&article).Error; err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
 	}
 	return ctx.JSON(article.NormalisedTitle)
 }
