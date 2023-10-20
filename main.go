@@ -11,6 +11,9 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	_ "github.com/mattn/go-sqlite3"
+
+	swagger "github.com/gofiber/swagger"
+	_ "web_practicum/docs"
 )
 
 func main() {
@@ -19,19 +22,30 @@ func main() {
 		log.Fatal(err)
 	}
 	app := fiber.New()
-	// app.Post("api/images")
-	app.Static("api/images", "./images")
-	app.Post("/api/create/article", createArticle)
-	app.Get("/api/article/:id<int>", getArticle)
-	app.Get("/api/shit", func(c *fiber.Ctx) error {
+	app.Get("/swagger/*", swagger.New(swagger.Config{}))
+	api := app.Group("/api")
+	// app.Post("api/images", postImage)
+	app.Static("/images", "./images")
+	api.Post("/create/article", createArticle)
+	api.Get("/article/:id<int>", getArticle)
+	api.Get("/shit", func(c *fiber.Ctx) error {
 		c.Response().SetBodyString("hello")
 		return nil
 	})
-	app.Get("/api/articles", getAllArticles)
+	api.Get("/articles", getAllArticles)
 	// app.Get("/api/articles/:user")
 	// app.Get("/api/user/articles")
 	log.Fatal(app.Listen(":8080"))
 }
+
+// @Summary Get all articles
+// @Description Get all articles
+// @Tags articles
+// @Accept json
+// @Produce json
+// @Success 200 {object} Article{}
+// @Failure 404
+// @Router /api/article/{id} [get]
 func getArticle(ctx *fiber.Ctx) error {
 
 	db := database.DB
