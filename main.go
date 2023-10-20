@@ -6,7 +6,7 @@ import (
 	// "fmt"
 	"log"
 	"web_practicum/database"
-	// . "web_practicum/models"
+	. "web_practicum/models"
 
 	// _ "github.com/lib/pq"
 	"github.com/gofiber/fiber/v2"
@@ -29,7 +29,7 @@ func main() {
 		c.Response().SetBodyString("hello")
 		return nil
 	})
-	// app.Get("/api/articles", getAllArticles)
+	app.Get("/api/articles", getAllArticles)
 	// app.Get("/api/articles/:user")
 	// app.Get("/api/user/articles")
 	log.Fatal(app.Listen(":8080"))
@@ -44,15 +44,15 @@ func getArticle(ctx *fiber.Ctx) error {
 	return ctx.JSON(obj)
 }
 
-// func getAllArticles(ctx *fiber.Ctx) error {
-//
-// 	db := database.DB
-// 	var articles []Article
-// 	obj := db.Find(articles)
-// 	if obj.Error != nil {
-// 		return fiber.ErrBadRequest
-// 	}
-// 	return ctx.JSON(obj)
-// }
+func getAllArticles(ctx *fiber.Ctx) error {
+
+	db := database.DB
+	var articles []Article
+	obj := db.Find(&articles)
+	if obj.Error != nil {
+		return fiber.ErrBadRequest
+	}
+	return ctx.JSON(articles)
+}
 
 
