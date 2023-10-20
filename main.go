@@ -1,17 +1,15 @@
 package main
 
 import (
-	// "log"
-
-	// "fmt"
+	"fmt"
 	"log"
+	"time"
+
 	"web_practicum/database"
 	. "web_practicum/models"
+	"web_practicum/services"
 
-	// _ "github.com/lib/pq"
 	"github.com/gofiber/fiber/v2"
-	// "github.com/prometheus/common/log"
-
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -69,11 +67,13 @@ func createArticle(ctx *fiber.Ctx) error {
 		log.Fatalln(err)
 	}
 	var article = Article{
-		Title:           articleReq.Title,
-		NormalisedTitle: services.Sanitize(articleReq.Title),
-		Subtitle:        articleReq.Subtitle,
-		Theme:           articleReq.Theme,
-		Content:         articleReq.Content,
+		Title: articleReq.Title,
+		NormalisedTitle: fmt.Sprintf("%s-%s",
+			services.Sanitize(articleReq.Title), time.Now().Format("02-01")),
+		Subtitle:  articleReq.Subtitle,
+		Theme:     articleReq.Theme,
+		Content:   articleReq.Content,
+		CreatedAt: time.Now().Format("02.01.2006"),
 	}
 
 	if err := db.Create(&article).Error; err != nil {

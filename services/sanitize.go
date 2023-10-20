@@ -1,7 +1,11 @@
 package services
 
-import iuliia "github.com/mehanizm/iuliia-go"
+import (
+	"strings"
+
+	iuliia "github.com/mehanizm/iuliia-go"
+)
 
 func Sanitize(str string) string {
-	return iuliia.Wikipedia.Translate(str)
+	return strings.ReplaceAll(iuliia.Wikipedia.Translate(str), " ", "_")
 }
