@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/gofiber/fiber/v2 v2.50.0
 	github.com/mattn/go-sqlite3 v1.14.17
+	github.com/mehanizm/iuliia-go v1.0.2
 	gorm.io/driver/sqlite v1.5.4
 	gorm.io/gorm v1.25.5
 )

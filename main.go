@@ -23,7 +23,7 @@ func main() {
 	app := fiber.New()
 	// app.Post("api/images")
 	app.Static("api/images", "./images")
-	// app.Post("/api/create/article")
+	app.Post("/api/create/article", createArticle)
 	app.Get("/api/article/:id<int>", getArticle)
 	app.Get("/api/shit", func(c *fiber.Ctx) error {
 		c.Response().SetBodyString("hello")
@@ -55,4 +55,30 @@ func getAllArticles(ctx *fiber.Ctx) error {
 	return ctx.JSON(articles)
 }
 
+func createArticle(ctx *fiber.Ctx) error {
+
+	type ArticleReqBody struct {
+		Title    string `json:"title"`
+		Subtitle string `json:"subtitle"`
+		Theme    string `json:"theme"`
+		Content  string `json:"content"`
+	}
+	db := database.DB
+	var articleReq ArticleReqBody
+	if err := ctx.BodyParser(&articleReq); err != nil {
+		log.Fatalln(err)
+	}
+	var article = Article{
+		Title:           articleReq.Title,
+		NormalisedTitle: services.Sanitize(articleReq.Title),
+		Subtitle:        articleReq.Subtitle,
+		Theme:           articleReq.Theme,
+		Content:         articleReq.Content,
+	}
+
+	if err := db.Create(&article).Error; err != nil {
+		log.Fatalln(err)
+	}
+	return ctx.JSON(article.NormalisedTitle)
+}
 
