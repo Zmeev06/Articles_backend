@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"os"
 	"time"
 	"web_practicum/database"
 	. "web_practicum/models"
@@ -62,7 +63,7 @@ func CreateArticle(ctx *fiber.Ctx) error {
 		fmt.Println(err)
 		return fiber.ErrBadRequest
 	}
-
+	hostname := os.Getenv("HOST_URL")
 	var article = Article{
 		Title: articleReq.Title,
 		NormalisedTitle: fmt.Sprintf("%s-%s",
@@ -77,6 +78,6 @@ func CreateArticle(ctx *fiber.Ctx) error {
 		fmt.Println(err)
 		return fiber.ErrInternalServerError
 	}
-	return ctx.JSON(article.NormalisedTitle)
+	return ctx.JSON(fmt.Sprintf("%s/%s", hostname, article.NormalisedTitle))
 }
 
