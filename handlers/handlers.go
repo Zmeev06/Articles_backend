@@ -77,7 +77,6 @@ func CreateArticle(ctx *fiber.Ctx) error {
 
 // @Summary Get article qr code image path
 // @Success 200 {object} int
-// @Failure 400
 // @Failure 500
 // @Param id path int true "article ID"
 // @Router /api/qr-codes/{id} [get]
@@ -87,7 +86,6 @@ func GetArticleQrcode(c *fiber.Ctx) error {
 
 // @Summary Get article estimated read time
 // @Success 200 {object} int
-// @Failure 400
 // @Failure 500
 // @Param id path int true "article ID"
 // @Router /api/reading-time/{id} [get]
