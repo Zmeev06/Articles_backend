@@ -28,6 +28,7 @@ func main() {
 	static.Static("/qr-codes", "./qr-codes")
 	api.Post("/create/article", CreateArticle)
 	api.Get("/article/:title", GetArticle)
+	api.Get("/qr-code/:id<int>", GetArticleQrcode)
 	api.Get("/articles", GetAllArticles)
 	// app.Get("/api/articles/:user")
 	// app.Get("/api/user/articles")

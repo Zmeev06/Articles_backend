@@ -10,5 +10,4 @@ type Article struct {
 	Theme           string    `json:"theme"`
 	Content         string    `json:"content"`
 	CreatedAt       string `json:"created_at"`
-	QrCode          string    `json:"qr_code"`
 }
