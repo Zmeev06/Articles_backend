@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"web_practicum/database"
 	. "web_practicum/handlers"
@@ -32,8 +33,9 @@ func main() {
 	api.Get("/articles", GetAllArticles)
 	// app.Get("/api/articles/:user")
 	// app.Get("/api/user/articles")
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.Listen(os.Getenv("LISTEN_ADDR")))
 }
+
 // func postImage(ctx *fiber.Ctx) error {
 // 	return nil
 // }
