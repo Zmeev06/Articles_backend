@@ -1,7 +1,5 @@
 package models
 
-// import "time"
-
 type Article struct {
 	ID              uint64 `json:"id"`
 	Title           string `json:"title" gorm:"type:VARCHAR(300)"`
@@ -11,4 +9,5 @@ type Article struct {
 	Content         string `json:"content"`
 	CreatedAt       string `json:"created_at" gorm:"type:VARCHAR(10)"`
 	TimesVisited    uint64 `json:"times_visited"`
+	Cover           string `json:"cover"`
 }
