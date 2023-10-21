@@ -28,10 +28,6 @@ func main() {
 	app.Static("/images", "./images")
 	api.Post("/create/article", createArticle)
 	api.Get("/article/:title", getArticle)
-	api.Get("/shit", func(c *fiber.Ctx) error {
-		c.Response().SetBodyString("hello")
-		return nil
-	})
 	api.Get("/articles", getAllArticles)
 	// app.Get("/api/articles/:user")
 	// app.Get("/api/user/articles")
