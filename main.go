@@ -27,7 +27,7 @@ func main() {
 	// app.Post("api/images", postImage)
 	app.Static("/images", "./images")
 	api.Post("/create/article", createArticle)
-	api.Get("/article/:id<int>", getArticle)
+	api.Get("/article/:title", getArticle)
 	api.Get("/shit", func(c *fiber.Ctx) error {
 		c.Response().SetBodyString("hello")
 		return nil
@@ -38,16 +38,16 @@ func main() {
 	log.Fatal(app.Listen(":8080"))
 }
 
-// @Summary Get article by id
+// @Summary Get article by title
 // @Success 200 {object} Article{}
 // @Failure 404
-// @Param id path int true "Book ID"
-// @Router /api/article/{id} [get]
+// @Param title path string true "normalised article title"
+// @Router /api/article/{title} [get]
 func getArticle(ctx *fiber.Ctx) error {
 
 	db := database.DB
 	var article Article
-	if err := db.First(&article, ctx.Params("id")).Error; err != nil {
+	if err := db.First(&article, Article{NormalisedTitle: ctx.Params("title")}).Error; err != nil {
 		fmt.Println(err)
 		return fiber.ErrNotFound
 	}
