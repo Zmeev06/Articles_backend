@@ -23,6 +23,9 @@ func GetArticle(ctx *fiber.Ctx) error {
 		fmt.Println(err)
 		return fiber.ErrNotFound
 	}
+	if err := db.Model(&article).Update("times_visited", article.TimesVisited + 1).Error; err != nil {
+		return err
+	}
 	return ctx.JSON(article)
 }
 
