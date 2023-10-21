@@ -25,7 +25,7 @@ func main() {
 	// app.Post("api/images", postImage)
 	static := app.Group("/static")
 	static.Static("/images", "./images")
-	static.Static("/qr_codes", "./qr_codes")
+	static.Static("/qr-codes", "./qr-codes")
 	api.Post("/create/article", CreateArticle)
 	api.Get("/article/:title", GetArticle)
 	api.Get("/articles", GetAllArticles)
