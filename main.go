@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"web_practicum/database"
-	. "web_practicum/handlers"
+	"web_practicum/routing"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -14,7 +14,6 @@ import (
 
 	_ "web_practicum/docs"
 
-	swagger "github.com/gofiber/swagger"
 )
 
 func main() {
@@ -40,16 +39,7 @@ func main() {
 		ExposeHeaders:    "",
 		MaxAge:           0,
 	}))
-	app.Get("/swagger/*", swagger.New(swagger.Config{}))
-	api := app.Group("/api")
-	static := app.Group("/static")
-	static.Static("/images", "./images")
-	static.Static("/qr-codes", "./qr-codes")
-	api.Post("/create/article", CreateArticle)
-	api.Get("/article/:title", GetArticle)
-	api.Get("/qr-code/:id<int>", GetArticleQrcode)
-	api.Get("/reading-time/:id<int>", GetArticleReadingTime)
-	api.Get("/articles", GetAllArticles)
+	routing.Setup(app)
 	log.Fatal(app.Listen(os.Getenv("LISTEN_ADDR")))
 }
 
