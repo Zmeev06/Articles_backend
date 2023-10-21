@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"fmt"
+	"math"
+	"strconv"
 	"time"
 	"web_practicum/database"
 	. "web_practicum/models"
@@ -92,4 +94,26 @@ func CreateArticle(ctx *fiber.Ctx) error {
 // @Router /api/qr-codes/{id} [get]
 func GetArticleQrcode(c *fiber.Ctx) error {
 	return c.JSON(fmt.Sprintf("static/qr-codes/%s.png", c.Params("id")))
+}
+
+// @Summary Get article estimated read time
+// @Success 200 {object} int
+// @Failure 400
+// @Failure 500
+// @Param id path int true "article ID"
+// @Router /api/reading-time/{id} [get]
+func GetArticleReadingTime(c *fiber.Ctx) error {
+
+	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
+
+	if err != nil {
+		return err
+	}
+	article, err := GetArticleById(id)
+	if err != nil {
+		return err
+	}
+	return c.JSON(
+		math.Ceil(
+			TimeToRead(article) / 60))
 }
