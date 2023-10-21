@@ -5,7 +5,7 @@ import (
 	"time"
 	"web_practicum/database"
 	. "web_practicum/models"
-	"web_practicum/services"
+	. "web_practicum/services"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -65,7 +65,7 @@ func CreateArticle(ctx *fiber.Ctx) error {
 	var article = Article{
 		Title: articleReq.Title,
 		NormalisedTitle: fmt.Sprintf("%s-%s",
-			services.Sanitize(articleReq.Title), time.Now().Format("02-01")),
+			Sanitize(articleReq.Title), time.Now().Format("02-01")),
 		Subtitle:  articleReq.Subtitle,
 		Theme:     articleReq.Theme,
 		Content:   articleReq.Content,
