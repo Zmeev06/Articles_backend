@@ -1,11 +1,11 @@
 package services
 
 import (
-	"strings"
+	"regexp"
 
 	iuliia "github.com/mehanizm/iuliia-go"
 )
 
 func Sanitize(str string) string {
-	return strings.ReplaceAll(iuliia.Wikipedia.Translate(str), " ", "_")
+	return regexp.MustCompile("[ ,.&*(!@#$~`\"'\\[\\]{}]").ReplaceAllString(iuliia.Wikipedia.Translate(str), "_")
 }
