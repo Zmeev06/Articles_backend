@@ -50,32 +50,21 @@ func GetAllArticles(ctx *fiber.Ctx) error {
 // @Success 200 {object} int
 // @Failure 400
 // @Failure 500
-// @Param request body handlers.CreateArticle.ArticleReqBody true "Subset of article fields"
+// @Param request body Article true "Subset of article fields"
 // @Router /api/create/article [post]
 func CreateArticle(ctx *fiber.Ctx) error {
 
-	type ArticleReqBody struct {
-		Title    string `json:"title"`
-		Subtitle string `json:"subtitle"`
-		Theme    string `json:"theme"`
-		Content  string `json:"content"`
-	}
-
 	db := database.DB
-	var articleReq ArticleReqBody
-	if err := ctx.BodyParser(&articleReq); err != nil {
+	var article Article
+	if err := ctx.BodyParser(&article); err != nil {
 		fmt.Println(err)
 		return fiber.ErrBadRequest
 	}
-	var article = Article{
-		Title: articleReq.Title,
-		NormalisedTitle: fmt.Sprintf("%s-%s",
-			Sanitize(articleReq.Title), time.Now().Format("02-01")),
-		Subtitle:  articleReq.Subtitle,
-		Theme:     articleReq.Theme,
-		Content:   articleReq.Content,
-		CreatedAt: time.Now().Format("02.01.2006"),
-	}
+	article.NormalisedTitle = fmt.Sprintf(
+		"%s-%s",
+		Sanitize(article.Title),
+		time.Now().Format("02-01"))
+	article.CreatedAt = time.Now().Format("02.01.2006")
 
 	if err := db.Create(&article).Error; err != nil {
 		return err
