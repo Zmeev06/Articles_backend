@@ -42,7 +42,6 @@ func main() {
 	}))
 	app.Get("/swagger/*", swagger.New(swagger.Config{}))
 	api := app.Group("/api")
-	// app.Post("api/images", postImage)
 	static := app.Group("/static")
 	static.Static("/images", "./images")
 	static.Static("/qr-codes", "./qr-codes")
@@ -51,8 +50,6 @@ func main() {
 	api.Get("/qr-code/:id<int>", GetArticleQrcode)
 	api.Get("/reading-time/:id<int>", GetArticleReadingTime)
 	api.Get("/articles", GetAllArticles)
-	// app.Get("/api/articles/:user")
-	// app.Get("/api/user/articles")
 	log.Fatal(app.Listen(os.Getenv("LISTEN_ADDR")))
 }
 

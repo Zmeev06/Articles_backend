@@ -12,7 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// @Summary Get article by title
+// @Summary Get article by title and increment its view counter
 // @Success 200 {object} Article{}
 // @Failure 404
 // @Param title path string true "normalised article title"
@@ -25,7 +25,7 @@ func GetArticle(ctx *fiber.Ctx) error {
 		fmt.Println(err)
 		return fiber.ErrNotFound
 	}
-	if err := db.Model(&article).Update("times_visited", article.TimesVisited + 1).Error; err != nil {
+	if err := db.Model(&article).Update("times_visited", article.TimesVisited+1).Error; err != nil {
 		return err
 	}
 	return ctx.JSON(article)
