@@ -1,6 +1,6 @@
 package models
 
-import "time"
+// import "time"
 
 type Article struct {
 	ID              uint64    `json:"id"`
@@ -9,6 +9,6 @@ type Article struct {
 	Subtitle        string    `json:"subtitle"`
 	Theme           string    `json:"theme"`
 	Content         string    `json:"content"`
-	CreatedAt       time.Time `json:"created_at"`
+	CreatedAt       string `json:"created_at"`
 	QrCode          string    `json:"qr_code"`
 }
