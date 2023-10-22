@@ -17,6 +17,6 @@ func Setup(app *fiber.App) {
 	static.Static("/qr-codes", "./qr-codes")
 	api.Post("/create/article", CreateArticle)
 	api.Get("/article/:title", GetArticle)
-	api.Get("/reading-time/:id<int>", GetArticleReadingTime)
 	api.Get("/articles", GetAllArticles)
+	app.Static("/", "./dist")
 }

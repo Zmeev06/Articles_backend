@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"strconv"
 	"time"
 	"web_practicum/database"
 	. "web_practicum/models"
@@ -70,6 +69,7 @@ func CreateArticle(ctx *fiber.Ctx) error {
 		Sanitize(article.Title),
 		time.Now().Format("02-01"))
 	article.CreatedAt = time.Now().Format("02.01.2006")
+	article.ReadingTime = getArticleReadingTime(article)
 
 	if err := db.Create(&article).Error; err != nil {
 		return err
@@ -82,23 +82,7 @@ func CreateArticle(ctx *fiber.Ctx) error {
 		QrCode: fmt.Sprintf("%s/static/%s", os.Getenv("HOST_URL"), path)})
 }
 
-// @Summary Get article estimated read time
-// @Success 200 {object} int
-// @Failure 500
-// @Param id path int true "article ID"
-// @Router /api/reading-time/{id} [get]
-func GetArticleReadingTime(c *fiber.Ctx) error {
-
-	id, err := strconv.ParseUint(c.Params("id"), 10, 0)
-
-	if err != nil {
-		return err
-	}
-	article, err := GetArticleById(id)
-	if err != nil {
-		return err
-	}
-	return c.JSON(
-		math.Ceil(
-			TimeToRead(article) / 60))
+func getArticleReadingTime(article Article) uint64 {
+	return uint64(math.Ceil(
+		TimeToRead(article) / 60))
 }
