@@ -3,7 +3,8 @@ package database
 import (
 	"os"
 
-	"gorm.io/driver/sqlite"
+	// "gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"web_practicum/models"
 )
@@ -14,7 +15,7 @@ func Setup() error {
 
 	connStr := os.Getenv("CONNECTION_STRING")
 	var err error
-	DB, err = gorm.Open(sqlite.Open(connStr), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
 		return err
 	}
