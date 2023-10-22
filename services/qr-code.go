@@ -9,8 +9,9 @@ import (
 	qrcode "github.com/skip2/go-qrcode"
 )
 
-func WriteQrCode(article Article) error {
-	return qrcode.WriteFile(
-		MakeLink(article), qrcode.Medium, 250, fmt.Sprintf("qr-codes/%s.png",
-			strconv.FormatUint(article.ID, 10)))
+func WriteQrCode(article Article) (string, error) {
+	path := fmt.Sprintf("qr-codes/%s.png",
+		strconv.FormatUint(article.ID, 10))
+	return path, qrcode.WriteFile(
+		MakeLink(article), qrcode.Medium, 250, path)
 }

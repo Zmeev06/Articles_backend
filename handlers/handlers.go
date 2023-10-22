@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"math"
+	"os"
 	"strconv"
 	"time"
 	"web_practicum/database"
@@ -46,14 +47,18 @@ func GetAllArticles(ctx *fiber.Ctx) error {
 	return ctx.JSON(articles)
 }
 
-// @Summary Create new article, return a created article ID
-// @Success 200 {object} int
+// @Summary Create new article, return a created article link and QR code
+// @Success 200 {object} handlers.CreateArticle.Response
 // @Failure 400
 // @Failure 500
 // @Param request body Article true "Subset of article fields"
 // @Router /api/create/article [post]
 func CreateArticle(ctx *fiber.Ctx) error {
 
+	type Response struct {
+		Link   string `json:"link"`
+		QrCode string `json:"qr_code"`
+	}
 	db := database.DB
 	var article Article
 	if err := ctx.BodyParser(&article); err != nil {
@@ -69,19 +74,12 @@ func CreateArticle(ctx *fiber.Ctx) error {
 	if err := db.Create(&article).Error; err != nil {
 		return err
 	}
-	if err := WriteQrCode(article); err != nil {
+	path, err := WriteQrCode(article)
+	if err != nil {
 		return err
 	}
-	return ctx.JSON(article.ID)
-}
-
-// @Summary Get article qr code image path
-// @Success 200 {object} int
-// @Failure 500
-// @Param id path int true "article ID"
-// @Router /api/qr-codes/{id} [get]
-func GetArticleQrcode(c *fiber.Ctx) error {
-	return c.JSON(fmt.Sprintf("static/qr-codes/%s.png", c.Params("id")))
+	return ctx.JSON(Response{Link: MakeLink(article),
+		QrCode: fmt.Sprintf("%s/static/%s", os.Getenv("HOST_URL"), path)})
 }
 
 // @Summary Get article estimated read time
