@@ -9,6 +9,6 @@ type Article struct {
 	Content         string `json:"content"`
 	CreatedAt       string `json:"created_at" gorm:"type:VARCHAR(10)"`
 	TimesVisited    uint64 `json:"times_visited"`
-	ReadingTime     uint64 `json:reading_time"`
+	ReadingTime     uint64 `json:"reading_time""`
 	Cover           string `json:"cover"`
 }
