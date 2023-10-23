@@ -10,7 +10,7 @@ import (
 )
 
 func WriteQrCode(article Article) (string, error) {
-	path := fmt.Sprintf("qr-codes/%s.png",
+	path := fmt.Sprintf("static/qr-codes/%s.png",
 		strconv.FormatUint(article.ID, 10))
 	return path, qrcode.WriteFile(
 		MakeLink(article), qrcode.Medium, 250, path)

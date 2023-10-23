@@ -79,7 +79,7 @@ func CreateArticle(ctx *fiber.Ctx) error {
 		return err
 	}
 	return ctx.JSON(Response{Link: MakeLink(article),
-		QrCode: fmt.Sprintf("%s/static/%s", os.Getenv("HOST_URL"), path)})
+		QrCode: fmt.Sprintf("%s/%s", os.Getenv("HOST_URL"), path)})
 }
 
 func getArticleReadingTime(article Article) uint64 {
